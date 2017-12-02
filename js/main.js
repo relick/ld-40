@@ -2,10 +2,17 @@ var socket = io();
 
 socket.on('update', update);
 
-var ptext;
-var poptions;
-var delayed = false;
-function update(data) {
+var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+function preload() {
+}
+
+function create() {
+}
+
+function update() {
+}
+/*function update(data) {
     if(data.delayed) {
         $(".option").addClass("delayed");
         $(".time").remove();
@@ -51,3 +58,4 @@ function sameOptions(o, p) {
         return true;
     }
 }
+*/

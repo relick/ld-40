@@ -17,7 +17,7 @@ http.listen(80, function() {
 
 function allSockets() {
     return io.sockets.connected;
-}
+}get
 
 var ticksPerSec = 10;
 var tickDelay = 1/ticksPerSec; //in ms
