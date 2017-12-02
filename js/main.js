@@ -5,7 +5,7 @@ var socket = io();
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'mid', { preload: preload, create: create, update: update });
 
 var cursors;
-var cars;
+var cars = [];
 
 function Car(id, sprite) {
     this.id = id;
