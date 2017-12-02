@@ -41,7 +41,7 @@ function update() {
         pos.dir_y = Math.sin(pos.angle);
     }
 
-    //car.rotation = pos.angle;
+    car.rotation = pos.angle;
     //car.position.x += pos.dir_x*pos.speed;
     //car.position.y += pos.dir_y*pos.speed;
     car.position.x = 1;
