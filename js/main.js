@@ -7,16 +7,17 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 var cursors;
 
 function preload() {
+    game.load.image('car', 'images/car.png');
 }
 
 function create() {
     cursors = game.input.keyboard.createCursorKeys();
+    game.add.sprite(0, 0, 'car');
 }
 var boop = false;
 
 function update() {
     if(cursors.up.isDown && !boop) {
-        console.log("boop");
         socket.emit('searchforgame');
         boop = true;
     }

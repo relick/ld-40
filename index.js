@@ -7,12 +7,12 @@ app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 app.use('/fonts', express.static('fonts'));
 
-app.get('/', function(req, res) {
+app.get('/ld40', function(req, res) {
     res.sendFile(__dirname + '/main.html'); 
 });
 
 http.listen(80, function() {
-    console.log("Listening on 80");
+    console.log("Listening on 80 at /ld40");
 });
 
 function allSockets() {
