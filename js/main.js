@@ -14,7 +14,7 @@ function Car(id, sprite) {
     this.sprite.anchor.y = 0.5;
     this.sprite.scale.x = 0.1;
     this.sprite.scale.y = 0.1;
-    switch(id) {
+    switch(this.id) {
         case 0:
             this.sprite.tint = 0xFFFFFF;
         case 1:
