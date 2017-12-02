@@ -5,6 +5,7 @@ socket.on('update', update);
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
 var cursors;
+var car;
 
 function preload() {
     game.load.image('car', '/images/car.png');
@@ -12,7 +13,8 @@ function preload() {
 
 function create() {
     cursors = game.input.keyboard.createCursorKeys();
-    game.add.sprite(0, 0, 'car');
+    car = game.add.sprite(0, 0, 'car');
+    car.tint = 0xFFFF00;
 }
 var boop = false;
 
