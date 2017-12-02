@@ -36,6 +36,10 @@ io.on('connection', function(socket) {
     });
 });
 
+function tick() {
+    //nothing
+}
+
 //Game
 
 var state;
@@ -43,6 +47,6 @@ var state;
 function reset() {
     state = "LOAD";
 
-};
+}
 
 reset();
