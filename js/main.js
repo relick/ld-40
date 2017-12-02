@@ -6,7 +6,7 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 
 var cursors;
 var car;
-var pos = {speed:0,angle:pi/2,dir_x:0,dir_y:1};
+var pos = {speed:0,angle:3.14159/2,dir_x:0,dir_y:1};
 
 function preload() {
     game.load.image('car', '/images/car.png');
