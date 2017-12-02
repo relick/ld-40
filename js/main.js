@@ -32,18 +32,19 @@ function update() {
     }
     if(cursors.right.isDown) {
         pos.angle -= 0.1;
-        pos.dir_x = cos(pos.angle);
-        pos.dir_y = sin(pos.angle);
+        pos.dir_x = Math.cos(pos.angle);
+        pos.dir_y = Math.sin(pos.angle);
     }
     if(cursors.left.isDown) {
         angle += 0.1;
-        pos.dir_x = cos(pos.angle);
-        pos.dir_y = sin(pos.angle);
+        pos.dir_x = Math.cos(pos.angle);
+        pos.dir_y = Math.sin(pos.angle);
     }
 
-    car.rotation = pos.angle;
-    car.position.x += pos.dir_x*pos.speed;
-    car.position.y += pos.dir_y*pos.speed;
+    //car.rotation = pos.angle;
+    //car.position.x += pos.dir_x*pos.speed;
+    //car.position.y += pos.dir_y*pos.speed;
+    car.position.x = 1;
 }
 /*function update(data) {
     if(data.delayed) {
