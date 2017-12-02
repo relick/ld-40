@@ -58,8 +58,8 @@ function update() {
         cars[0].sprite.rotation -= 0.1;
     }
 
-    cars[0].sprite.position.x += Math.cos(pos.angle)*cars[0].speed;
-    cars[0].sprite.position.y += Math.sin(pos.angle)*cars[0].speed;
+    cars[0].sprite.position.x += Math.cos(cars[0].sprite.rotation)*cars[0].speed;
+    cars[0].sprite.position.y += Math.sin(cars[0].sprite.rotation)*cars[0].speed;
 }
 
 /*function request_pos() {
