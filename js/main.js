@@ -6,6 +6,7 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create
 
 var cursors;
 var car;
+var pos = {speed:0,angle:pi/2,dir_x:0,dir_y:1};
 
 function preload() {
     game.load.image('car', '/images/car.png');
@@ -16,13 +17,33 @@ function create() {
     car = game.add.sprite(0, 0, 'car');
     car.tint = 0xFFFF00;
 }
-var boop = false;
+//var boop = false;
 
 function update() {
-    if(cursors.up.isDown && !boop) {
+    /*if(cursors.up.isDown && !boop) {
         socket.emit('searchforgame');
         boop = true;
+    }*/
+    pos.speed -= 0.05;
+    if(pos.speed < 0)
+        pos.speed = 0;
+    if(cursors.up.isDown) {
+        pos.speed += 0.1;
     }
+    if(cursors.right.isDown) {
+        pos.angle -= 0.1;
+        pos.dir_x = cos(pos.angle);
+        pos.dir_y = sin(pos.angle);
+    }
+    if(cursors.left.isDown) {
+        angle += 0.1;
+        pos.dir_x = cos(pos.angle);
+        pos.dir_y = sin(pos.angle);
+    }
+
+    car.rotation = pos.angle;
+    car.position.x += pos.dir_x*pos.speed;
+    car.position.y += pos.dir_y*pos.speed;
 }
 /*function update(data) {
     if(data.delayed) {
@@ -36,7 +57,8 @@ function update() {
     var text = data.text;
     var options = data.options;
         
-    if(ptext != text) {
+    if(
+        ptext != text) {
         $("#text").html(text);
         ptext = text;
     }
