@@ -71,5 +71,15 @@ function reset() {
 reset();
 
 function tick() {
+    var k = allSockets();
+    for(var s in k){
+        if(k[s].player != undefined) {
+            update(k[s]);
+        }
+    }
+}
+
+function update(socket) {
+    //socket.emit('request_pos');
     
 }

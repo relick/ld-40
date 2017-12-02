@@ -1,12 +1,32 @@
 var socket = io();
 
-socket.on('update', update);
+//socket.on('request_pos', request_pos);
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'mid', { preload: preload, create: create, update: update });
 
 var cursors;
-var car;
-var pos = {speed:0,angle:-3.14159/2,dir_x:0,dir_y:1};
+var cars;
+
+function Car(id, sprite) {
+    this.id = id;
+    this.sprite = sprite;
+    this.sprite.anchor.x = 0.5;
+    this.sprite.anchor.y = 0.5;
+    this.sprite.scale.x = 0.1;
+    this.sprite.scale.y = 0.1;
+    switch(id) {
+        case 0:
+            this.sprite.tint = 0xFFFFFF;
+        case 1:
+            this.sprite.tint = 0xFF0000;
+        case 2:
+            this.sprite.tint = 0x00FF00;
+        case 3:
+            this.sprite.tint = 0x0000FF;
+    }
+    this.speed = 0;
+    this.sprite.rotation = -3.14159/2;
+}
 
 function preload() {
     game.load.image('car', '/images/car.png');
@@ -14,12 +34,7 @@ function preload() {
 
 function create() {
     cursors = game.input.keyboard.createCursorKeys();
-    car = game.add.sprite(0, 0, 'car');
-    car.anchor.x = 0.5;
-    car.anchor.y = 0.5;
-    car.scale.x = 0.1;
-    car.scale.y = 0.1;
-    car.tint = 0xFFFF00;
+    cars.push(new Car(0, game.add.sprite(400, 300, 'car')));
 }
 //var boop = false;
 
@@ -28,29 +43,29 @@ function update() {
         socket.emit('searchforgame');
         boop = true;
     }*/
-    pos.speed -= 0.05;
-    if(pos.speed < 0)
-        pos.speed = 0;
+    cars[0].speed -= 0.05;
+    if(cars[0].speed < 0)
+        cars[0].speed = 0;
     if(cursors.up.isDown) {
-        pos.speed += 0.1;
+        cars[0].speed += 0.1;
     }
-    if(pos.speed > 30)
-        pos.speed = 30;
+    if(cars[0].speed > 20)
+        cars[0].speed = 20;
     if(cursors.right.isDown) {
-        pos.angle += 0.1;
-        pos.dir_x = Math.cos(pos.angle);
-        pos.dir_y = Math.sin(pos.angle);
+        cars[0].sprite.rotation += 0.1;
     }
     if(cursors.left.isDown) {
-        pos.angle -= 0.1;
-        pos.dir_x = Math.cos(pos.angle);
-        pos.dir_y = Math.sin(pos.angle);
+        cars[0].sprite.rotation -= 0.1;
     }
 
-    car.rotation = pos.angle;
-    car.position.x += pos.dir_x*pos.speed;
-    car.position.y += pos.dir_y*pos.speed;
+    cars[0].sprite.position.x += Math.cos(pos.angle)*cars[0].speed;
+    cars[0].sprite.position.y += Math.sin(pos.angle)*cars[0].speed;
 }
+
+/*function request_pos() {
+    socket.emit('return_pos', {pos:pos});
+}*/
+
 /*function update(data) {
     if(data.delayed) {
         $(".option").addClass("delayed");
