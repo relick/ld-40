@@ -4,12 +4,13 @@ socket.on('update', update);
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
 
-var cursors = game.input.keyboard.createCursorKeys();
+var cursors;
 
 function preload() {
 }
 
 function create() {
+    cursors = game.input.keyboard.createCursorKeys();
 }
 var boop = false;
 
