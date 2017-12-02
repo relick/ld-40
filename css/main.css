@@ -1,0 +1,28 @@
+@font-face {
+    font-family:'roboto slab';
+    src:url('/fonts/RobotoSlab-Regular.ttf');
+}
+body {
+    background-color:#f7f7f7;
+    font-family:'roboto slab';
+}
+
+#text {
+    margin-bottom:1em;
+}
+
+a {
+    color:dodgerblue;
+    text-decoration:none;
+    margin-bottom:0.5em;
+    padding-left:2em;
+}
+
+
+a.delayed {
+    color:gray;
+}
+
+span {
+    padding-left:0.5em;
+}

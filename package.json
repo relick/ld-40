@@ -1,0 +1,9 @@
+{
+        "name": "dubg",
+        "version": "1",
+        "dependencies": {
+                "chance": "^1.0.12",
+                "express": "^4.16.2",
+                "socket.io": "^2.0.4"
+        }
+}
