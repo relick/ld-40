@@ -45,7 +45,7 @@ function tick() {
 var state;
 
 function reset() {
-    state = "LOAD";
+    state = "TEST";
 
 }
 
