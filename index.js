@@ -59,7 +59,7 @@ function Player(socket) {
 //Game
 var new_players;
 var groups;
-var latestlfg;
+var lfg;
 
 function reset() {
     new_players = [];
