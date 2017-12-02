@@ -15,6 +15,8 @@ function preload() {
 function create() {
     cursors = game.input.keyboard.createCursorKeys();
     car = game.add.sprite(0, 0, 'car');
+    car.anchor.x = 0.5;
+    car.anchor.y = 0.5;
     car.tint = 0xFFFF00;
 }
 //var boop = false;
@@ -36,7 +38,7 @@ function update() {
         pos.dir_y = Math.sin(pos.angle);
     }
     if(cursors.left.isDown) {
-        angle += 0.1;
+        pos.angle += 0.1;
         pos.dir_x = Math.cos(pos.angle);
         pos.dir_y = Math.sin(pos.angle);
     }
