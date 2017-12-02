@@ -20,7 +20,7 @@ function allSockets() {
 }
 
 var ticksPerSec = 10;
-var tickDelay = 1/ticksPersec; //in ms
+var tickDelay = 1/ticksPerSec; //in ms
 setInterval(tick, tickDelay);
 
 //io Events
