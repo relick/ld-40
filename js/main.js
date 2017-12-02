@@ -17,12 +17,16 @@ function Car(id, sprite) {
     switch(this.id) {
         case 0:
             this.sprite.tint = 0xFFFFFF;
+            break;
         case 1:
             this.sprite.tint = 0xFF0000;
+            break;
         case 2:
             this.sprite.tint = 0x00FF00;
+            break;
         case 3:
             this.sprite.tint = 0x0000FF;
+            break;
     }
     this.speed = 0;
     this.sprite.rotation = -3.14159/2;
