@@ -20,33 +20,55 @@ function allSockets() {
 }
 
 var ticksPerSec = 10;
-var tickDelay = 1/ticksPerSec; //in ms
+var tickDelay = 1/ticksPerSec;
 setInterval(tick, tickDelay);
 
 //io Events
 
 io.on('connection', function(socket) {
-    if(state != "TEST") {
-        socket.disconnect();
-        return;
-    }
+    console.log("connecting " + socket.id)
+    socket.player = new Player(socket);
+    new_players.push(socket.player);
+
+    socket.on('searchforgame', function() {
+        socket.player.state = "SEARCHING";
+        lfg.push(socket);
+        if(lfg.length == 4) {
+            groups.push(lfg.slice());
+            //game_start(groups[groups.length-1]); //impl
+            lfg = [];
+            new_players.splice(new_players.indexOf(socket), 1);
+            console.log(lfg);
+            console.log(groups);
+        }
+    });
 
     socket.on('disconnect', function() {
         console.log("disconnecting " + socket.id);
     });
 });
 
-function tick() {
-    //nothing
+function Player(socket) {
+    this.x = 0;
+    this.y = 0;
+    this.socket = socket;
+    this.state = "SETUP";
+    this.group = -1;
 }
 
 //Game
-
-var state;
+var new_players;
+var groups;
+var latestlfg;
 
 function reset() {
-    state = "TEST";
-
+    new_players = [];
+    lfg = [];
+    groups = [];
 }
 
 reset();
+
+function tick() {
+    
+}
