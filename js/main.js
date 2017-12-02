@@ -17,6 +17,8 @@ function create() {
     car = game.add.sprite(0, 0, 'car');
     car.anchor.x = 0.5;
     car.anchor.y = 0.5;
+    car.scale.x = 0.1;
+    car.scale.y = 0.1;
     car.tint = 0xFFFF00;
 }
 //var boop = false;
@@ -44,9 +46,8 @@ function update() {
     }
 
     car.rotation = pos.angle;
-    //car.position.x += pos.dir_x*pos.speed;
-    //car.position.y += pos.dir_y*pos.speed;
-    car.position.x = 1;
+    car.position.x += pos.dir_x*pos.speed;
+    car.position.y += pos.dir_y*pos.speed;
 }
 /*function update(data) {
     if(data.delayed) {
