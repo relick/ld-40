@@ -11,10 +11,13 @@ function preload() {
 
 function create() {
 }
+var boop = false;
 
 function update() {
-    if(cursors.up.isDown) {
+    console.log("boop");
+    if(cursors.up.isDown && !boop) {
         socket.emit('searchforgame');
+        boop = true;
     }
 }
 /*function update(data) {

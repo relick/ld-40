@@ -7,7 +7,7 @@ app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 app.use('/fonts', express.static('fonts'));
 
-app.get('/', function(req, res) {
+app.get('/ld40', function(req, res) {
     res.sendFile(__dirname + '/main.html'); 
 });
 
@@ -28,7 +28,7 @@ setInterval(tick, tickDelay);
 io.on('connection', function(socket) {
     console.log("connecting " + socket.id)
     socket.player = new Player(socket);
-    new_players.push(socket.player);
+    new_players.push(socket);
 
     socket.on('searchforgame', function() {
         socket.player.state = "SEARCHING";
