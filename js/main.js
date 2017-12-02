@@ -15,8 +15,8 @@ function create() {
 var boop = false;
 
 function update() {
-    console.log("boop");
     if(cursors.up.isDown && !boop) {
+        console.log("boop");
         socket.emit('searchforgame');
         boop = true;
     }
