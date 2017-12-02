@@ -6,6 +6,7 @@ var io = require('socket.io')(http)
 app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 app.use('/fonts', express.static('fonts'));
+app.use('/images', express.static('images'));
 
 app.get('/ld40', function(req, res) {
     res.sendFile(__dirname + '/main.html'); 
