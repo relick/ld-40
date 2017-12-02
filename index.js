@@ -7,7 +7,7 @@ app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 app.use('/fonts', express.static('fonts'));
 
-app.get('/ld40', function(req, res) {
+app.get('/', function(req, res) {
     res.sendFile(__dirname + '/main.html'); 
 });
 
