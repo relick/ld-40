@@ -67,17 +67,17 @@ function PlayerManager(maxSize) {
         freePls.push(socket);
     }
     this.updateAll = function() {
-        for(i in freePls) {
-            if(freePls[i] !== undefined) {
+        for(i in this.freePls) {
+            if(this.freePls[i] !== undefined) {
                 var text = '<div id="text"><p>Room List</p>';
                 text += '<ul>';
-                if(groups.length === 0) {
+                if(this.rooms.length === 0) {
                     text += '<li>None yet! Start one now.</li>'
                 } else {
-                    rooms.map(function(g) {
-                        text += '<li><b>Room [' + g.id + ']:</b> ' + g.numPlayers + ' present. ';
+                    rooms.map(function(r) {
+                        text += '<li><b>Room [' + r.id + ']:</b> ' + r.numPlayers + ' present. ';
                         if(g.open) {
-                            text += '<a href="javascript:;" onclick="joinRoom({id:'+g.id+',name:"wah"})">JOIN</a></li>';
+                            text += '<a href="javascript:;" onclick="joinRoom({id:'+r.id+',name:"wah"})">JOIN</a></li>';
                         } else {
                             text += 'FULL</li>';
                         }
@@ -85,7 +85,7 @@ function PlayerManager(maxSize) {
                 }
                 text += '</ul></div>';
                 text += '<div id="options"><a href="javascript:;" onclick="startRoom()"Start room</a></div>';
-                freePls[i].emit({state:"PREGAME", html:text});
+                this.freePls[i].emit({state:"PREGAME", html:text});
             }
         }
     }
