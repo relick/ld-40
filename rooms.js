@@ -99,7 +99,7 @@ function PlayerManager(maxSize) {
                     text += '</ul></div>';
                     text += '<div id="options"><a href="javascript:;" onclick="leaveRoom()">Leave room</a></div>';
                     
-                    this.rooms[r].players.map(function(k) {k.emit('update', {state:"PREGAME", html:text})});
+                    this.rooms[r].players.map(function(k) {k.soc.emit('update', {state:"PREGAME", html:text})});
                 }
             }
         }
