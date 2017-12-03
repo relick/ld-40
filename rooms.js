@@ -91,7 +91,6 @@ function PlayerManager(maxSize) {
     }
 
     this.startRoom = function(socket) {
-        console.log("wah");
         this.rooms.push(new Room(socket, "DEMONKING"));
         //this.freePls.splice(this.freePls.indexOf(socket), 1);
     }
