@@ -63,8 +63,8 @@ function PlayerManager(maxSize) {
     };
 
     this.connectedPlayer = function(socket) {
-        connPls.push(socket);
-        freePls.push(socket);
+        this.connPls.push(socket);
+        this.freePls.push(socket);
     }
     this.updateAll = function() {
         for(i in this.freePls) {
@@ -76,7 +76,7 @@ function PlayerManager(maxSize) {
                 } else {
                     rooms.map(function(r) {
                         text += '<li><b>Room [' + r.id + ']:</b> ' + r.numPlayers + ' present. ';
-                        if(g.open) {
+                        if(r.open) {
                             text += '<a href="javascript:;" onclick="joinRoom({id:'+r.id+',name:"wah"})">JOIN</a></li>';
                         } else {
                             text += 'FULL</li>';
@@ -91,8 +91,8 @@ function PlayerManager(maxSize) {
     }
 
     this.startRoom = function(socket) {
-        rooms.push(new Room(socket, "DEMONKING"));
-        freePls.splice(freePls.indexOf(socket), 1);
+        this.rooms.push(new Room(socket, "DEMONKING"));
+        this.freePls.splice(this.freePls.indexOf(socket), 1);
     }
 /*
     this.addPlayerToRoom = function(socket, groupID, playerName) {
