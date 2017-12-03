@@ -15,5 +15,6 @@ function joinRoom(obj) {
 }
 
 function startRoom() {
+    console.log("wah");
     socket.emit('createRoom');
 }

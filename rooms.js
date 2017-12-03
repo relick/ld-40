@@ -77,20 +77,21 @@ function PlayerManager(maxSize) {
                     this.rooms.map(function(r) {
                         text += '<li><b>Room [' + r.id + ']:</b> ' + r.numPlayers + ' present. ';
                         if(r.open) {
-                            text += '<a href="javascript:joinRoom({id:'+r.id+',name:"wah"});">JOIN</a></li>';
+                            text += '<a href="#" onclick="joinRoom({id:'+r.id+',name:"wah"})">JOIN</a></li>';
                         } else {
                             text += 'FULL</li>';
                         }
                     });
                 }
                 text += '</ul></div>';
-                text += '<div id="options"><a href="javascript:startRoom();">Start room</a></div>';
+                text += '<div id="options"><a href="#" onclick="startRoom()">Start room</a></div>';
                 this.freePls[i].emit('update', {state:"PREGAME", html:text});
             }
         }
     }
 
     this.startRoom = function(socket) {
+        console.log("wah");
         this.rooms.push(new Room(socket, "DEMONKING"));
         this.freePls.splice(this.freePls.indexOf(socket), 1);
     }
