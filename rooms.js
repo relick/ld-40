@@ -74,17 +74,17 @@ function PlayerManager(maxSize) {
                 if(this.rooms.length === 0) {
                     text += '<li>None yet! Start one now.</li>'
                 } else {
-                    rooms.map(function(r) {
+                    this.rooms.map(function(r) {
                         text += '<li><b>Room [' + r.id + ']:</b> ' + r.numPlayers + ' present. ';
                         if(r.open) {
-                            text += '<a href="javascript:;" onclick="joinRoom({id:'+r.id+',name:"wah"})">JOIN</a></li>';
+                            text += '<a href="javascript:joinRoom({id:'+r.id+',name:"wah"});">JOIN</a></li>';
                         } else {
                             text += 'FULL</li>';
                         }
                     });
                 }
                 text += '</ul></div>';
-                text += '<div id="options"><a href="javascript:;" onclick="startRoom()">Start room</a></div>';
+                text += '<div id="options"><a href="javascript:startRoom();">Start room</a></div>';
                 this.freePls[i].emit('update', {state:"PREGAME", html:text});
             }
         }
