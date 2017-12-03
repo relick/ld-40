@@ -67,6 +67,7 @@ function PlayerManager(maxSize) {
         this.freePls.push(socket);
     }
     this.updateAll = function() {
+        //Room list for those not in a room
         for(i in this.freePls) {
             if(this.freePls[i] !== undefined) {
                 var text = '<div id="text"><p>Room List</p>';
@@ -79,15 +80,17 @@ function PlayerManager(maxSize) {
                         if(r.open) {
                             text += '<a href="javascript:;" onclick="joinRoom({id:'+r.id+',name:"wah"})">JOIN</a></li>';
                         } else {
-                            text += 'FULL</li>';
+                            text += 'PLAYING</li>';
                         }
                     });
                 }
                 text += '</ul></div>';
-                text += '<div id="options"><a href="javascript:;" onclick="startRoom()">Start room</a></div>';
+                text += '<div id="options">Name: <input type="text" id="name" /> <a href="javascript:;" onclick="startRoom()">Start room</a></div>';
                 this.freePls[i].emit('update', {state:"PREGAME", html:text});
             }
         }
+
+        //Player list for those in a waiting room
         for(r in this.rooms) {
             if(this.rooms[r] !== undefined) {
                 if(this.rooms[r].open) {
@@ -103,19 +106,21 @@ function PlayerManager(maxSize) {
                 }
             }
         }
+
+        //Game update for those playing
     }
 
-    this.startRoom = function(socket) {
+    this.startRoom = function(socket, name) {
         if(this.freePls.indexOf(socket) !== -1) {
-            this.rooms.push(new Room(socket, "DEMONKING"));
+            this.rooms.push(new Room(socket, name));
             this.freePls.splice(this.freePls.indexOf(socket), 1);
         } else {
             console.log(socket.id + " tried to startRoom but is already in one!");
             socket.disconnect();
         }
     }
-/*
-    this.addPlayerToRoom = function(socket, groupID, playerName) {
+
+    /*this.addPlayerToRoom = function(socket, groupID, playerName) {
         for(i in groups) {
             if(groups[i] !== undefined) {
                 if(groups[i].id === groupID) {
@@ -139,19 +144,6 @@ function PlayerManager(maxSize) {
                 }
             }
         }
-    }
-
-    this.updateAll = function() {
-        for(i in ungroupedPlayers) {
-            if(ungroupedPlayers[i] !== undefined) {
-
-            }
-        }
-        for(i in groups) {
-            if(groups[i] !== undefined) {
-                
-            }
-        }
     }*/
 }
 
@@ -159,13 +151,13 @@ io.on('connection', function(socket) {
     console.log("Player connected: " + socket.id);
     pm.connectedPlayer(socket);
 
-    socket.on('createRoom', function() {
-        pm.startRoom(socket);
+    socket.on('createRoom', function(obj) {
+        pm.startRoom(socket, obj.name);
         //socket.emit('waitingForPlayers', {timeout:0});
     });
 
     socket.on('joinRoom', function(obj) {
-        //var r = pm.addPlayerToRo
+        //var r = pm.addPlayerToRoom(socket, obj.id, obj.name);
         //Matchmaking begin
         //var pm;om(socket, obj.id, obj.name);
         /*if(r === "SUC_ROOM_NOW_FULL") {

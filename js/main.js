@@ -24,5 +24,9 @@ function joinRoom(obj) {
 }
 
 function startRoom() {
-    socket.emit('createRoom');
+    if($("#name").val() === "") {
+        alert("You need to enter a name.");
+    } else {
+        socket.emit('createRoom', {name:$("#name").val()});
+    }
 }
