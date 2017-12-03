@@ -5,6 +5,7 @@ socket.on('disconnect', disconnect);
 
 function disconnect() {
     $("#mid").html('<p>Server shut down.</p>');
+    location.reload();
 }
 
 var ptext = "";
@@ -20,7 +21,11 @@ function update(data) {
 }
 
 function joinRoom(obj) {
-    socket.emit('joinRoom', obj);
+    if(obj.name === "") {
+        alert("You need to enter a name.");
+    } else {
+        socket.emit('joinRoom', obj);
+    }
 }
 
 function startRoom() {
