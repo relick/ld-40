@@ -85,7 +85,7 @@ function PlayerManager(maxSize) {
                 }
                 text += '</ul></div>';
                 text += '<div id="options"><a href="javascript:;" onclick="startRoom()"Start room</a></div>';
-                this.freePls[i].emit({state:"PREGAME", html:text});
+                this.freePls[i].emit('update', {state:"PREGAME", html:text});
             }
         }
     }
