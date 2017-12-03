@@ -67,7 +67,6 @@ function PlayerManager(maxSize) {
         this.freePls.push(socket);
     }
     this.updateAll = function() {
-        this.freePls.map(function(p) { console.log(p.id); });
         for(i in this.freePls) {
             if(this.freePls[i] !== undefined) {
                 var text = '<div id="text"><p>Room List</p>';
@@ -94,7 +93,7 @@ function PlayerManager(maxSize) {
     this.startRoom = function(socket) {
         console.log("wah");
         this.rooms.push(new Room(socket, "DEMONKING"));
-        this.freePls.splice(this.freePls.indexOf(socket), 1);
+        //this.freePls.splice(this.freePls.indexOf(socket), 1);
     }
 /*
     this.addPlayerToRoom = function(socket, groupID, playerName) {
