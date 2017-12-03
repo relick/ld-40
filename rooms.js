@@ -205,7 +205,8 @@ io.on('connection', function(socket) {
 
 function Room(firstPlayer, firstPName) {
     this.id = chance.word({syllables:2}).toUpperCase();
-    this.players = [{soc:firstPlayer, name:firstPName}];
+    firstPlayer.name = firstPName;
+    this.players = [firstPlayer];
     this.open = true;
     this.numPlayers = 1;
 
