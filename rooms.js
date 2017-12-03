@@ -77,22 +77,42 @@ function PlayerManager(maxSize) {
                     this.rooms.map(function(r) {
                         text += '<li><b>Room [' + r.id + ']:</b> ' + r.numPlayers + ' present. ';
                         if(r.open) {
-                            text += '<a href="#" onclick="joinRoom({id:'+r.id+',name:"wah"})">JOIN</a></li>';
+                            text += '<a href="javascript:;" onclick="joinRoom({id:'+r.id+',name:"wah"})">JOIN</a></li>';
                         } else {
                             text += 'FULL</li>';
                         }
                     });
                 }
                 text += '</ul></div>';
-                text += '<div id="options"><a href="#" onclick="startRoom()">Start room</a></div>';
+                text += '<div id="options"><a href="javascript:;" onclick="startRoom()">Start room</a></div>';
                 this.freePls[i].emit('update', {state:"PREGAME", html:text});
+            }
+        }
+        for(r in this.rooms) {
+            if(this.rooms[r] !== undefined) {
+                if(this.rooms[r].open) {
+                    var text = '<div id="text"><p>Player List for Room <b>'+rooms[r].id+'</b></p>';
+                    text += '<ul>';
+                    this.rooms[r].players.map(function(p) {
+                        text += '<li>'+p.name+'</li>';
+                    });
+                    text += '</ul></div>';
+                    text += '<div id="options"><a href="javascript:;" onclick="leaveRoom()">Leave room</a></div>';
+                    
+                    this.rooms[r].players.map(function(k) {k.emit('update', {state:"PREGAME", html:text})});
+                }
             }
         }
     }
 
     this.startRoom = function(socket) {
-        this.rooms.push(new Room(socket, "DEMONKING"));
-        //this.freePls.splice(this.freePls.indexOf(socket), 1);
+        if(this.freePls.indexOf(socket) !== -1) {
+            this.rooms.push(new Room(socket, "DEMONKING"));
+            this.freePls.splice(this.freePls.indexOf(socket), 1);
+        } else {
+            console.log(socket.id + " tried to startRoom but is already in one!");
+            socket.disconnect();
+        }
     }
 /*
     this.addPlayerToRoom = function(socket, groupID, playerName) {
