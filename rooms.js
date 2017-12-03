@@ -67,7 +67,7 @@ function PlayerManager(maxSize) {
         this.freePls.push(socket);
     }
     this.updateAll = function() {
-        console.log(freePls);
+        console.log(this.freePls);
         for(i in this.freePls) {
             if(this.freePls[i] !== undefined) {
                 var text = '<div id="text"><p>Room List</p>';
