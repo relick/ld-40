@@ -1,6 +1,12 @@
 var socket = io();
 
 socket.on('update', update);
+socket.on('disconnect', disconnect);
+
+function disconnect() {
+    $("#mid").html('Server shut down.');
+}
+
 var ptext = "";
 function update(data) {
     if(data.state === "PREGAME") {
