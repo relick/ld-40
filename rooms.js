@@ -21,7 +21,7 @@ exports.startServer = function(accessPoint, port, source, maxPlayers, ticksPerSe
         console.log("Listening on " + port + " at " + accessPoint);
     });
 
-    tickDelay = 1/ticksPerSec;
+    tickDelay = 1000/ticksPerSec;
     setInterval(tick, tickDelay);
 
     reset(maxPlayers);
