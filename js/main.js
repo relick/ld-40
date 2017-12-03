@@ -20,11 +20,11 @@ function update(data) {
     }
 }
 
-function joinRoom(obj) {
-    if(obj.name === "") {
+function joinRoom(id) {
+    if($("#name").val() === "") {
         alert("You need to enter a name.");
     } else {
-        socket.emit('joinRoom', obj);
+        socket.emit('joinRoom', {id:id, name:$("#name").val()});
     }
 }
 
