@@ -1,10 +1,13 @@
 var socket = io();
 
 socket.on('update', update);
+var ptext = "";
 function update(data) {
     if(data.state === "PREGAME") {
-        if($("mid").html !== data.html)
+        if(ptext !== data.html) {
             $("#mid").html($(data.html));
+            ptext = data.html;
+        }
     } else {
         //game
     }
