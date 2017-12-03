@@ -143,6 +143,8 @@ function PlayerManager(maxSize) {
         }
         for(i in this.rooms) {
             if(this.rooms[i] !== undefined) {
+                console.log(this.rooms[i].id);
+                console.log(groupID);
                 if(this.rooms[i].id === groupID) {
                     if(this.rooms[i].open === true) {
                         if(this.rooms[i].numPlayers < this.maxGroupSize-1) {
@@ -172,7 +174,10 @@ function PlayerManager(maxSize) {
                 if(this.rooms[i] !== undefined) {
                     for(j in this.rooms[i].players) {
                         if(this.rooms[i].players[j] === socket) {
-                            this.rooms[i].removePlayer(socket);
+                            var r = this.rooms[i].removePlayer(socket);
+                            if(r === 0) {
+                                this.rooms.splice(i, 1);
+                            }
                         }
                     }
                 }
