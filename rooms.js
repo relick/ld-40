@@ -124,7 +124,10 @@ function PlayerManager(maxSize) {
         for(i in this.rooms) {
             if(this.rooms[i] !== undefined) {
                 if(this.rooms[i].players.indexOf(socket) !== -1) {
-                    this.rooms[i].removePlayer(socket);
+                    var r = this.rooms[i].removePlayer(socket);
+                    if(r === 0) {
+                        this.rooms.splice(i, 1);
+                    }
                     this.freePls.push(socket);
                     return;
                 }
@@ -219,6 +222,11 @@ function Room(firstPlayer, firstPName) {
     this.removePlayer = function(socket) {
         this.players.splice(this.players.indexOf(socket), 1);
         this.numPlayers -= 1;
+        if(this.numPlayers === 0) {
+            return 0;
+        } else {
+            return 1;
+        }
     };
 }
 
