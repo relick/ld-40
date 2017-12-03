@@ -3,7 +3,8 @@ var socket = io();
 socket.on('update', update);
 function update(data) {
     if(data.state === "PREGAME") {
-        $("#mid").html($(data.html));
+        if($("mid").html !== data.html)
+            $("#mid").html($(data.html));
     } else {
         //game
     }
