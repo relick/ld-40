@@ -102,7 +102,7 @@ function PlayerManager(maxSize) {
                     text += '</ul></div>';
                     text += '<div id="options"><a href="javascript:;" onclick="leaveRoom()">Leave room</a></div>';
                     
-                    this.rooms[r].players.map(function(k) {k.soc.emit('update', {state:"PREGAME", html:text})});
+                    this.rooms[r].players.map(function(k) {k.emit('update', {state:"PREGAME", html:text})});
                 }
             }
         }
@@ -118,6 +118,19 @@ function PlayerManager(maxSize) {
             console.log(socket.id + " tried to startRoom but is already in one!");
             socket.disconnect();
         }
+    }
+
+    this.leaveRoom = function(socket) {
+        for(i in this.rooms) {
+            if(this.rooms[i] !== undefined) {
+                if(this.rooms[i].players.indexOf(socket) !== -1) {
+                    this.rooms[i].removePlayer(socket);
+                    this.freePls.push(socket);
+                    return;
+                }
+            }
+        }
+        console.log(socket.id + " tried to leave room but not in room!");
     }
 
     /*this.addPlayerToRoom = function(socket, groupID, playerName) {
@@ -168,6 +181,10 @@ io.on('connection', function(socket) {
             pm.emitToRoom(obj.id, 'newPlayer');
         }*/
     });
+
+    socket.on('leaveRoom', function() {
+        pm.leaveRoom(socket);
+    });
 /*
     socket.on('disconnect', function() {
         console.log("Player disconnected: " + socket.id);
@@ -193,10 +210,15 @@ function Room(firstPlayer, firstPName) {
     this.numPlayers = 1;
 
     this.addPlayer = function(socket, playerName) {
-        this.players.push({soc:socket, name:playerName});
+        socket.name = playerName;
+        this.players.push(socket);
         this.numPlayers += 1;
     };
 
+    this.removePlayer = function(socket) {
+        this.players.splice(this.players.indexOf(socket), 1);
+        this.numPlayers -= 1;
+    };
 }
 
 function tick() {

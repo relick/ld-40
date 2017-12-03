@@ -30,3 +30,7 @@ function startRoom() {
         socket.emit('createRoom', {name:$("#name").val()});
     }
 }
+
+function leaveRoom() {
+    socket.emit('leaveRoom');
+}
