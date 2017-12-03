@@ -12,7 +12,7 @@ app.use('/images', express.static('images'));
 
 var tickDelay;
 
-function startServer(accessPoint, port, source, maxPlayers, ticksPerSec) {
+exports.startServer = function(accessPoint, port, source, maxPlayers, ticksPerSec) {
     app.get(accessPoint, function(req, res) {
         res.sendFile(__dirname + source);
     });

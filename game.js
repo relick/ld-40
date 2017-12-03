@@ -1,4 +1,4 @@
-require('rooms.js')
+require('rooms')
 
-startServer('/ld40', 80, '/main.html', 4, 10);
+rooms.startServer('/ld40', 80, '/main.html', 4, 10);
 
