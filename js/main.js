@@ -4,7 +4,7 @@ socket.on('update', update);
 socket.on('disconnect', disconnect);
 
 function disconnect() {
-    $("#mid").html('Server shut down.');
+    $("#mid").html('<p>Server shut down.</p>');
 }
 
 var ptext = "";
