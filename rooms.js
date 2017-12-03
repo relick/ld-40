@@ -79,7 +79,7 @@ function PlayerManager(maxSize) {
                     this.rooms.map(function(r) {
                         text += '<li><b>Room [' + r.id + ']:</b> ' + r.numPlayers + ' present. ';
                         if(r.open) {
-                            text += '<a href="javascript:;" onclick="joinRoom({id:"'+r.id+'",name:$(name).val()})">JOIN</a></li>';
+                            text += '<a href="javascript:;" onclick="joinRoom({id:\''+r.id+'\',name:$(name).val()})">JOIN</a></li>';
                         } else {
                             text += 'PLAYING</li>';
                         }
