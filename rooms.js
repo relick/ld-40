@@ -65,7 +65,8 @@ function PlayerManager(maxSize) {
     this.connectedPlayer = function(socket) {
         this.connPls.push(socket);
         this.freePls.push(socket);
-    }
+    };
+
     this.updateAll = function() {
         //Room list for those not in a room
         for(i in this.freePls) {
@@ -108,7 +109,7 @@ function PlayerManager(maxSize) {
         }
 
         //Game update for those playing
-    }
+    };
 
     this.startRoom = function(socket, name) {
         if(this.freePls.indexOf(socket) !== -1) {
@@ -118,7 +119,7 @@ function PlayerManager(maxSize) {
             console.log(socket.id + " tried to startRoom but is already in one!");
             socket.disconnect();
         }
-    }
+    };
 
     this.leaveRoom = function(socket) {
         for(i in this.rooms) {
@@ -134,7 +135,7 @@ function PlayerManager(maxSize) {
             }
         }
         console.log(socket.id + " tried to leave room but not in room!");
-    }
+    };
 
     this.addPlayerToRoom = function(socket, groupID, playerName) {
         if(this.freePls.indexOf(socket) !== -1) {
@@ -144,11 +145,11 @@ function PlayerManager(maxSize) {
             if(this.rooms[i] !== undefined) {
                 if(this.rooms[i].id === groupID) {
                     if(this.rooms[i].open === true) {
-                        if(this.rooms[i].numPlayers < maxGroupSize-1) {
+                        if(this.rooms[i].numPlayers < this.maxGroupSize-1) {
                             this.rooms[i].addPlayer(socket, playerName);
                             this.freePls.splice(this.freePls.indexOf(socket), 1);
                             return "SUC_ROOM_STILL_OPEN";
-                        } else if(this.rooms[i].numPlayers === maxGroupSize-1) {
+                        } else if(this.rooms[i].numPlayers === this.maxGroupSize-1) {
                             this.rooms[i].addPlayer(socket, playerName);
                             this.freePls.splice(this.freePls.indexOf(socket), 1);
                             return "SUC_ROOM_NOW_FULL";
@@ -163,7 +164,24 @@ function PlayerManager(maxSize) {
                 }
             }
         }
-    }
+    };
+
+    this.disconnectedPlayer = function(socket) {
+        if(this.freePls.indexOf(socket) === -1) {
+            for(i in this.rooms) {
+                if(this.rooms[i] !== undefined) {
+                    for(j in this.rooms[i].players) {
+                        if(this.rooms[i].players[j] === socket) {
+                            this.rooms[i].removePlayer(socket);
+                        }
+                    }
+                }
+            }
+        } else {
+            this.freePls.splice(this.freePls.indexOf(socket), 1);
+        }
+        this.connPls.splice(this.connPls.indexOf(socket), 1);
+    };
 }
 
 io.on('connection', function(socket) {
@@ -191,21 +209,11 @@ io.on('connection', function(socket) {
     socket.on('leaveRoom', function() {
         pm.leaveRoom(socket);
     });
-/*
+
     socket.on('disconnect', function() {
         console.log("Player disconnected: " + socket.id);
-        connectedPlayers.splice(connectedPlayers.indexOf(socket), 1);
-        var n = ungroupedPlayers.indexOf(socket);
-        if(n === -1) {
-            for(i in groups) {
-                if(groups[i] !== undefined) {
-
-                }
-            }
-        } else {
-            ungroupedPlayers.splice(ungroupedPlayers.indexOf(socket), 1);
-        }
-    });*/
+        pm.disconnectedPlayer(socket);
+    });
 });
 
 
