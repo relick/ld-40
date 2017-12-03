@@ -138,7 +138,7 @@ function PlayerManager(maxSize) {
     };
 
     this.addPlayerToRoom = function(socket, groupID, playerName) {
-        if(this.freePls.indexOf(socket) !== -1) {
+        if(this.freePls.indexOf(socket) === -1) {
             return "ERR_PLAYER_IN_ROOM";
         }
         for(i in this.rooms) {
