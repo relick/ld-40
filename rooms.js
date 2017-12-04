@@ -11,8 +11,14 @@ app.use('/fonts', express.static('fonts'));
 app.use('/images', express.static('images'));
 
 var tickDelay;
+var gameUpdate;
+var gameStart;
+var gamePlayerLeave;
 
-exports.startServer = function(accessPoint, port, source, maxPlayers, ticksPerSec) {
+exports.startServer = function(accessPoint, port, source, maxPlayers, ticksPerSec, up, st, gpl) {
+    gameUpdate = up;
+    gameStart = st;
+    gamePlayerLeave = gpl;
     app.get(accessPoint, function(req, res) {
         res.sendFile(__dirname + source);
     });
@@ -102,8 +108,21 @@ function PlayerManager(maxSize) {
                     });
                     text += '</ul></div>';
                     text += '<div id="options"><a href="javascript:;" onclick="leaveRoom()">Leave room</a></div>';
-                    
-                    this.rooms[r].players.map(function(k) {k.emit('update', {state:"PREGAME", html:text})});
+                    var first = true;
+                    var id = this.rooms[r].id;
+                    this.rooms[r].players.map(function(k) {
+                        if(first) {
+                            first = false;
+                            k.emit('update', {state:"PREGAME", html:text+'<div id="options"><a href="javascript:;" onclick="socket.emit(\'startGame\', {id:\''+id+'\'})">Start game</a></div>'});
+                        } else {
+                            k.emit('update', {state:"PREGAME", html:text});
+                        }
+                    });
+                } else {
+                    var data = gameUpdate(this.rooms[r].players, this.rooms[r].id);
+                    this.rooms[r].players.map(function(k) {
+                        k.emit('update', data);
+                    });
                 }
             }
         }
@@ -126,6 +145,8 @@ function PlayerManager(maxSize) {
             if(this.rooms[i] !== undefined) {
                 if(this.rooms[i].players.indexOf(socket) !== -1) {
                     var r = this.rooms[i].removePlayer(socket);
+                    if(!this.rooms[i].open)
+                        socket.emit('endgame');
                     if(r === 0) {
                         this.rooms.splice(i, 1);
                     }
@@ -143,8 +164,6 @@ function PlayerManager(maxSize) {
         }
         for(i in this.rooms) {
             if(this.rooms[i] !== undefined) {
-                console.log(this.rooms[i].id);
-                console.log(groupID);
                 if(this.rooms[i].id === groupID) {
                     if(this.rooms[i].open === true) {
                         if(this.rooms[i].numPlayers < this.maxGroupSize-1) {
@@ -187,6 +206,25 @@ function PlayerManager(maxSize) {
         }
         this.connPls.splice(this.connPls.indexOf(socket), 1);
     };
+
+    this.startGame = function(socket, roomID) {
+        for(i in this.rooms) {
+            if(this.rooms[i].id === roomID) {
+                if(this.rooms[i].players[0] === socket) {
+                    this.rooms[i].open = false;
+                    gameStart(this.rooms[i].players, roomID);
+                }
+            }
+        }
+    };
+
+    this.getFirstInRoom = function(roomID) {
+        for(i in this.rooms) {
+            if(this.rooms[i].id === roomID) {
+                return this.rooms[i].players[0];
+            }
+        }
+    };
 }
 
 io.on('connection', function(socket) {
@@ -201,18 +239,19 @@ io.on('connection', function(socket) {
     socket.on('joinRoom', function(obj) {
         var r = pm.addPlayerToRoom(socket, obj.id, obj.name);
         //Matchmaking begin
-        //var pm;om(socket, obj.id, obj.name);
-        /*if(r === "SUC_ROOM_NOW_FULL") {
-            pm.emitToRoom(obj.id, 'newPlayer');
-            pm.emitToRoom(obj.id, 'start');
-            pm.closeRoom(obj.id);
-        } else if(r === "SUC_ROOM_STILL_OPEN") {
-            pm.emitToRoom(obj.id, 'newPlayer');
-        }*/
+        if(r === "SUC_ROOM_NOW_FULL") {
+            pm.startGame(pm.getFirstInRoom(obj.id),obj.id);
+        } else if(r !== "SUC_ROOM_STILL_OPEN") {
+            socket.emit('ohno', {err:r});
+        }
     });
 
     socket.on('leaveRoom', function() {
         pm.leaveRoom(socket);
+    });
+
+    socket.on('startGame', function(obj) {
+        pm.startGame(socket, obj.id);
     });
 
     socket.on('disconnect', function() {
