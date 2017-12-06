@@ -47,12 +47,16 @@ function update(data) {
         }
     } else {
         if(initialised) {
-            socket.emit('newpos', {pos:players[mynum].sprite.position,rot:players[mynum].sprite.rotation,spe:players[mynum].speed});
+            socket.emit('newpos', {pos:players[mynum].sprite.position,
+                rot:players[mynum].sprite.rotation,
+                spe:players[mynum].speed,
+                rspe:players[mynum].rotspeed});
             for(let i = 0; i < data.p.length; i++) {
                 if(i !== mynum) {
                     players[i].sprite.position = data.p[i].position;
                     players[i].sprite.rotation = data.p[i].rotation;
                     players[i].speed = data.p[i].speed;
+                    players[i].rotspeed = data.p[i].rotspeed;
                 }
             }
         }
@@ -70,6 +74,7 @@ var mynum;
 function Player(colour) {
     this.colour = colour;
     this.speed = 0;
+    this.rotspeed = 0;
 
     this.addSprite = function(sprite, n) {
         this.sprite = sprite;
@@ -122,15 +127,18 @@ function phaserUpdate() {
     if(players[mynum].speed > 10)
         players[mynum].speed = 10;
     if(cursors.right.isDown) {
-        players[mynum].sprite.rotation += 0.1;
+        players[mynum].rotspeed = 0.1;
     }
-    if(cursors.left.isDown) {
-        players[mynum].sprite.rotation -= 0.1;
+    else if(cursors.left.isDown) {
+        players[mynum].rotspeed = -0.1;
+    } else {
+        players[mynum].rotspeed = 0;
     }
 
     for(let i = 0; i < players.length; i++) {
         players[i].sprite.position.x += Math.cos(players[i].sprite.rotation)*players[i].speed;
         players[i].sprite.position.y += Math.sin(players[i].sprite.rotation)*players[i].speed;
+        players[i].sprite.rotation += players[i].rotspeed;
     }
     game.camera.x = players[mynum].sprite.position.x-400;
     game.camera.y = players[mynum].sprite.position.y-300;

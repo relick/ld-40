@@ -33,6 +33,7 @@ function roomStart(playersInRoom, roomID) {
             p[i].position = obj.pos;
             p[i].rotation = obj.rot;
             p[i].speed = obj.spe;
+            p[i].rotspeed = obj.rspe;
         });
         playersInRoom[i].emit('start', {yournum:i, p:colors});
     }
