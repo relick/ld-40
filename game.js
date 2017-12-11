@@ -2,13 +2,13 @@ var rooms = require('./rooms')
 
 rooms.startServer('/', 4000, '/main.html', 4, 10, roomUpdate, roomStart, playerLeave);
 
-var p;
+var r = [];
 function roomUpdate(playersInRoom, roomID) {
-    return {state:"PLAYING",p:p};
+    return {state:"PLAYING",p:r[roomID]};
 }
 
 function roomStart(playersInRoom, roomID) {
-    p = [];
+    r[roomID] = [];
     var colors = [];
     for(let i = 0; i < playersInRoom.length; i++) {
         switch(i) {
@@ -28,17 +28,20 @@ function roomStart(playersInRoom, roomID) {
     }
     for(let i = 0; i < playersInRoom.length; i++) {
         playersInRoom[i].on('newpos', function(obj) {
-            if(p[i] === undefined)
-                p[i] = {};
-            p[i].position = obj.pos;
-            p[i].rotation = obj.rot;
-            p[i].speed = obj.spe;
-            p[i].rotspeed = obj.rspe;
+            if(r[roomID][i] === undefined) {
+                r[roomID][i] = {};
+                r[roomID][i].alpha = 1;
+            }
+            r[roomID][i].position = obj.pos;
+            r[roomID][i].rotation = obj.rot;
+            r[roomID][i].speed = obj.spe;
+            r[roomID][i].rotspeed = obj.rspe;
         });
         playersInRoom[i].emit('start', {yournum:i, p:colors});
+        //playersInRoom[i].on('playerLeave', playerLeave);
     }
 }
 
-function playerLeave() {
-    //wham
+function playerLeave(obj) {
+    r[obj.roomID][obj.id].alpha = 0;
 }

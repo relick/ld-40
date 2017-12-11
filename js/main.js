@@ -10,7 +10,6 @@ socket.on('start', startGame);
 //serber stuff
 function disconnect() {
     $("#mid").html('<p>Server shut down.</p>');
-    location.reload();
 }
 
 function joinRoom(id) {
@@ -57,6 +56,7 @@ function update(data) {
                     players[i].sprite.rotation = data.p[i].rotation;
                     players[i].speed = data.p[i].speed;
                     players[i].rotspeed = data.p[i].rotspeed;
+                    players[i].sprite.alpha = data.p[i].alpha;
                 }
             }
         }

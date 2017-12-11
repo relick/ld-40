@@ -180,11 +180,10 @@ function PlayerManager(maxSize) {
                     } else {
                         return "ERR_ROOM_CLOSED";
                     }
-                } else {
-                    return "ERR_ROOM_NOT_FOUND";
                 }
             }
         }
+        return "ERR_ROOM_NOT_FOUND";
     };
 
     this.disconnectedPlayer = function(socket) {
